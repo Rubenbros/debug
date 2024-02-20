@@ -103,55 +103,56 @@ errores
 
 ## Ejercicio 2: Excepciones
 
-**Goals**
+**Metas**
 
-* Set breakpoints on exception creation
+* Establecer breakpoints en la creación de excepciones
 
-Although breakpoints allow us a chance to peek inside running code, it is sometimes unclear where to start
-looking. Many times you'll find yourself replacing breakpoints until you find the correct spot to start
-debugging.
+Aunque las excepciones nos dan la oportunidad de investigar dentro del código que corre, a veces no está tan claro donde
+empezar a mirar. Muchas veces te encontrarás reemplazando breakpoints hasta que encuentres el punto correcto donde empezar
+a depurar
 
-Start by opening the ``E2ExceptionCreation`` source and running it. Like the previous exercise, we have a
-stack trace to start from:
+Empieza por abrir el fichero ``E2CreacionDeExcepciones`` y ejecutarlo. Como en el anterior ejercicio
+tenemos una traza por donde empezar:
 
-![E2 Stack trace](images/e2.png "E2 Stack trace")
+![E2 Traza](images/e2.png "E2 Traza")
 
-Try setting a breakpoint on the conditional line:
+Intenta colocar un breakpoint en la siguiente línea condicional:
 
 ```
-49 |    if (index < 0 || index >= list.size()) {
+31 |    if (indice < 0 || indice >= lista.size()) {
 ```
+Prueba a depurar ahora, utilizando "Resume" cada vez que te encuentres un breakpoint.
+¿Cuántas veces te has parado en un breakpoint?
 
-Try debugging now, using Resume any time a breakpoint is encountered. How many times do you hit a breakpoint?
+Como solo estamos interesados en el método ``procesarElementoEnIndice`` cuando ocurre un problema, 
+probemos algo diferente:
 
-Since we are only interested in the ``processElementAtIndex`` method when a problem actually occurs,
-let's try something different:
+1. En la perspectiva de debug, selecciona la pestaña de  _Breakpoints_. Deberías ver los breakpoints activos:
 
-1. In the Debug window, select _View Breakpoint_. You should now see the following dialog
+![E2 Breakpoints](images/e2-view-breakpoint.png "E2 Breakpoints")
 
-![E2 View breakpoints](images/e2-view-breakpoint.png "E2 View Breakpoints")
-
-2. Now add a new ``Java Exception Breakpoint`` by selecting the ``+`` and selecting
+2. Añade un ``Java Exception Breakpoint`` al seleccionar ``J!`` y después
    `IllegalArgumentException`
-3. Debug the program. Resume execution until the program hits the newly created breakpoint for `IllegalArgumentException`. When it does, inspect the Variables window.
+3. Depura el programa y "Resume" hasta que llegues al breakpoint creado en `IllegalArgumentException`. Mira entonces
+la ventana de variables
 
-At this point, we know there is a problem accessing the ``99999th`` element of the list, but
-the variables window doesn't tell us exactly what the problem is. We can manually expand
-and explore the list variable - but given its size that could be cumbersome.
+En este punto, sabemos que hay im problema accediendo al ``99999º`` elemento de la lista,
+pero la ventana de variables no nos dice cuál es el problema exactamente. Podemos expandir manualmente
+y ecplorar la lista - pero dado su tamaño puede ser una tarea inalcanzable.
 
-Can you tell what went wrong in the program?
+¿Sabrías decir que está yendo mal en el programa?
 
-**Takeaways**
+**Conclusiones**
 
-* Setting breakpoints on exceptions avoids unnecessary breakpoint hits (and can be useful when we
-  aren't sure where to set the breakpoint)
+* Colocar breakpoints en excepciones evita paradas innecesarias de breakpoints( y puede ser util cuando no estamos seguros
+de donde colocar los breakpoints)
 
-## Exercise 3: Conditional breakpoints
+## Ejercicio 3: Breakpoints condicionales
 
-**Goals**
+**Metas**
 
-* Create a breakpoint that triggers after a specified number of hits
-* Create a breakpoint that triggers when a certain condition is ``true``
+* Crear un breakpoint que para tras un número especificado de ocurrencias
+* Crear un breakpoint que para cuando una condición es ``true``
 
 Breakpoints trigger every time the corresponding line would be executed, which may be
 undesirable for repeated code blocks. It may be enough to carefully consider the breakpoint
@@ -159,54 +160,57 @@ placement - on an exception, or within a conditional block. But when these optio
 available, we can make our breakpoints more powerful by triggering only when there's
 something of interest to see.
 
-Start by opening the ``E3ConditionalCrisis`` source and running it. This time our console
-output looks a bit different:
+Los breakpoints paran cada vez que la correspondiente línea fuera a ser ejecutada, lo que puede no ser deseable para
+bucles o código que se repite. Quizá convenga cambiar el lugar del breakpoint - en una excepción, o dentro de un bloque
+condicional. Pero cuando estas opciones no están disponibles podemos hacer nuestros breakpoints más potentes haciendo que
+solo se llamen cuando hay algo interesante que ver.
 
-![E3 Stack trace](images/e3.png "E2 Stack trace ")
+Empieza por abrir el fichero ``E3CrisisCondicional`` y arráncalo. Esta vez la consola luce algo distinto:
 
-In addition to the exception stack trace, the program itself appears to have found an
-invalid object, causing the processing to go unfinished. Although we could set a
-breakpoint on the exception, as we did in exercise 2, the exception is actually
-happening after the more interesting part of the program - the loop. As we learned
-in exercise 2, breakpoints in code that is called repeatedly are annoying, so let's
-see what we can find by attaching conditions to our breakpoint.
+![E3 Trazas](images/e3.png "E3 Trazas ")
 
-First set a breakpoint on the line after the ``everythingIsOK`` assignment:
+Además de las trazas de excepción, el propio programa parece que ha encontrado un objeto inválido, causando que el proceso
+no termine. Aunque podríamos poner un breakpoint en la excepción, como hicimos en el ejercicio 2, la excepción
+está pasando después de la parte más interesante del programa - el bucle. Como hemos aprendido en el ejercicio 2,
+los breakpoints que se llaman repetidamente son molestos, asi que vamos a buscar añadirle condiciones.
+
+Primero ponemos un breakpoint en la línea después de la asignación de la variable ``todoVaBien``:
 
 ```
-39 |    everythingIsOK = ObjectAnalyzer.processElementAtIndex(myArray, i);
-40 |    i++;
+20 |    todoVaBien = AnalizaObjetos.processElementAtIndex(miArray, i);
+21 |    i++;
 ```
 
-Then try the following:
+Después prueba lo siguiente
 
-1. Open the _Breakpoints_ dialog
-2. Select the breakpoint from above.
-3. Check the _Pass count_ checkbox and set it to the object number printed in the error message.
-4. Try debugging
+1. Abre la pestaña de _Breakpoints_ 
+2. Selecciona el breakpoint que hemos puesto antes.
+3. Haz clic derecho y selecciona la opción _Hit count_ y establécelo al número de objeto que se ha impreso.
+4. Prueba a depurar
 
-Was there a problem with the current object when/if your breakpoint is hit?
+¿Había algún problema con el objeto actual cuando se llama a tu breakpoint?
 
-Using count-based conditional breakpoints can be very useful if the error is deterministic.
-In this case it will not work, so we need to try something different.
+Usar breakpoints basados en recuentos puede ser muy útil si el error es determinista.
+En este caso no ha funcionado, asi que tendremos que probar algo distinto.
 
-We know the ``everythingIsOK`` flag reflects the integrity of the object at a given index
-- So what we really want to use here is a breakpoint that stops in the loop when the
-  ``everythingIsOK`` flag is set to ``false``. Fortunately, breakpoints have an optional
-  _Condition_ flag - where we can enter any Java statement that resolves to a boolean value.
-  Try it out:
+Sabemos que ``todoVaBien`` refleja la integridad del objeto en un índice dado
+- Asi que lo que queremos utilizar realmente es un breakpoint que para cuando 
+  ``todoVaBien`` sea ``false``. Afortunadamente, los breakpoints pueden albergar condiciones opcionalmente
+donde podemos introducir cualquier instrucción Java que devuelva un valor booleano.
+Pruébalo:
 
-1. Open the _Breakpoints_ dialog again
-2. Uncheck the _Pass count_ checkbox
-3. Check the _Condition_ box
-5. Enter the condition we want to check
-6. Try debugging again
+1. Abre _Breakpoints_ de nuevo
+2. Desactiva el _Hit count_
+3. Click derecho y _Breakpoint Properties_
+4. Marca la casilla _Conditional_
+5. Introduce la condición que queremos comprobar antes de pararnos
+6. Prueba a depurar de nuevo
 
-Were you able to get the breakpoint to stop in the loop only when a problem is encountered?
+¿Pudiste parar el breakpoint en el bucle solo cuando hubo un problema?
 
-What was suspicious about the object at that index?
+¿Qué había de sospechoso en el objeto en ese índice?
 
-**Takeaways**
+**Conclusiones**
 
-* Setting a pass count on a breakpoint is useful if problematic code is called multiple times.
-* If problems appear randomly, using a conditional expressions on the breakpoint can help.
+* Establecer un recuento en un breakpoint es util cuando código problemático se llama muchas veces.
+* Si los problemas aparecen de manera aleatoria, utilizar expresiones condicionales en el breakpoint puede ayudar.

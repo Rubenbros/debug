@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * DEJA DE MIRAR ESTA CLASE. ES COMO VER LA CARA DE UN ANGEL
+ * DEJA DE MIRAR ESTA CLASE. ES COMO VER LA CARA DE UN ANGEL (NO LO SOPORTARIAS)
  */
 public class CreaObjetos {
 
